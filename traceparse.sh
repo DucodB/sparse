@@ -7,18 +7,18 @@ fi
 
 filename="$1"
 app="$2"
-file_res="res_${filename}"
+temp_filename="temp_${filename}"
 
-if [ ! -e "$file_res" ]; then
-	#Run strace and store in file filename
-	strace -o "$filename" "${@:2}"
+if [ ! -e "$temp_filename" ]; then
+	#Run strace and store in file temp_filename
+	strace -o "$temp_filename" "${@:2}"
 
-	#Run ./sparse on generated strace data and store in file filename_res
-	./sparse "$filename" "$file_res"
+	#Run ./sparse on generated strace data and store in file filename
+	./sparse "$temp_filename" "$filename"
 
 	#Remove strace output file
-	rm "$filename"
+	rm "$temp_filename"
 else
-	echo "File '$file_res' already exists."
+	echo "File '$temp_filename' already exists. Execution stopped to avoid unexpected file deletion."
 	exit 1
 fi
